@@ -5,7 +5,7 @@ Expense-splitting PWA for roommates. Monorepo: ASP.NET Core API (`server`) + Rea
 ## Prerequisites
 
 - .NET 10 SDK
-- Node 22+
+- Node 22+ with pnpm
 
 ## Run
 
@@ -16,7 +16,7 @@ dotnet run
 
 # terminal 2 — client (http://localhost:5173)
 cd client
-npm run dev
+pnpm dev
 ```
 
 The client dev server proxies `/api/*` to the API (see `client/vite.config.ts`), so fetch calls from React can just hit `/api/...` with no CORS setup needed.
