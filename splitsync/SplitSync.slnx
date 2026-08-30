@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/server.Tests/">
+    <Project Path="server.Tests/SplitSync.Api.Tests.csproj" />
+  </Folder>
   <Folder Name="/server/">
     <Project Path="server/SplitSync.Api.csproj" />
   </Folder>
