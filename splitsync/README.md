@@ -9,6 +9,15 @@ Expense-splitting PWA for roommates. Monorepo: ASP.NET Core API (`server`) + Rea
 
 ## Run
 
+From the repo root, one command starts both:
+
+```bash
+pnpm install   # first time only, installs the root dev-orchestration tooling
+pnpm dev
+```
+
+Or run them separately in two terminals, if you want independent control/logs:
+
 ```bash
 # terminal 1 — API (http://localhost:5085)
 cd server
