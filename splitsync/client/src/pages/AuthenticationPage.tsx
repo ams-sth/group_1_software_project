@@ -12,11 +12,11 @@ function AuthenticationPage() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     // Auth isn't wired up yet — stub navigation to the next screen.
-    navigate('/groups')
+    navigate('/home')
   }
 
   function handleGoogleContinue() {
-    navigate('/groups')
+    navigate('/home')
   }
 
   return (
