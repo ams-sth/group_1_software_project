@@ -1,3 +1,4 @@
+using JobTrackr.Api.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,5 +20,15 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// temporary code for task 2.5
+var draft = new JobApplication
+{
+    CompanyName = "Acme Corp",
+    Position = "Backend Engineer",
+    Location = "Remote",
+    CreatedAt = DateTimeOffset.UtcNow,
+    UpdatedAt = DateTimeOffset.UtcNow
+};
 
 app.Run();
