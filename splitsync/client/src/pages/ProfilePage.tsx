@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { clearSession, getCurrentUser } from '../lib/session'
 
 function ProfilePage() {
   const navigate = useNavigate()
-  // Stub data — no auth/session layer wired up yet, so this isn't the real signed-in user.
+  const user = getCurrentUser()
+  // Notification preference isn't persisted to the backend yet — local-only for now.
   const [notificationsEnabled, setNotificationsEnabled] = useState(true)
 
   function handleSignOut() {
+    clearSession()
     navigate('/')
   }
 
@@ -22,9 +25,9 @@ function ProfilePage() {
 
         <div className="flex flex-col gap-1 rounded-lg border p-4 border-(--border) bg-(--surface)">
           <span className="text-xs text-(--text)">Username</span>
-          <span className="text-sm text-(--text-h)">priya</span>
+          <span className="text-sm text-(--text-h)">{user?.username ?? 'Not signed in'}</span>
           <span className="mt-3 text-xs text-(--text)">Email</span>
-          <span className="text-sm text-(--text-h)">priya@example.com</span>
+          <span className="text-sm text-(--text-h)">{user?.email ?? '—'}</span>
         </div>
 
         <label className="flex items-center justify-between rounded-lg border p-4 border-(--border) bg-(--surface)">
