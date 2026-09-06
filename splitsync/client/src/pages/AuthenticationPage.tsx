@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ApiError, login, register } from '../lib/api'
+import { saveSession } from '../lib/session'
 
 type Mode = 'signin' | 'create'
 
@@ -8,14 +10,28 @@ function AuthenticationPage() {
   const [mode, setMode] = useState<Mode>('signin')
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    // Auth isn't wired up yet — stub navigation to the next screen.
-    navigate('/home')
+    setError(null)
+    setIsSubmitting(true)
+    try {
+      const auth = mode === 'signin'
+        ? await login(identifier, password)
+        : await register(identifier, password)
+      saveSession(auth)
+      navigate('/home')
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Could not reach the server. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   function handleGoogleContinue() {
+    // Real Google OAuth isn't wired up yet — separate task.
     navigate('/home')
   }
 
@@ -125,11 +141,18 @@ function AuthenticationPage() {
             className="rounded-lg border px-3 py-2.5 text-sm bg-(--surface) border-(--border) text-(--text-h) focus:outline-2 focus:outline-offset-1 focus:outline-(--accent-border)"
           />
 
+          {error && (
+            <p role="alert" className="mt-1 text-xs text-red-500">
+              {error}
+            </p>
+          )}
+
           <button
             type="submit"
-            className="mt-3.5 cursor-pointer rounded-lg py-2.5 text-sm font-semibold text-white bg-(--accent) hover:opacity-90"
+            disabled={isSubmitting}
+            className="mt-3.5 cursor-pointer rounded-lg py-2.5 text-sm font-semibold text-white bg-(--accent) hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {mode === 'signin' ? 'Sign in' : 'Create account'}
+            {isSubmitting ? 'Please wait…' : mode === 'signin' ? 'Sign in' : 'Create account'}
           </button>
         </form>
 
