@@ -1,77 +1,51 @@
-﻿// Lesson 1A
-// Console.WriteLine("=== SecureVault ===");
-
-// string website = "Example";
-// string username = "student@example.com";
-// int strengthScore = 75;
-// bool isFavourite = true;
-// DateTime createdAt = DateTime.Now;
-
-// Console.WriteLine($"Website: {website}");
-// Console.WriteLine($"Username: {username}");
-// Console.WriteLine($"Strength: {strengthScore}");
-// Console.WriteLine($"Favourite: {isFavourite}");
-// Console.WriteLine($"Created: {createdAt}");
-
-// Lesson 1B
-// Console.Write("Enter the website name: ");
-// string? website = Console.ReadLine();
-
-// Console.Write("Enter a numeric ID: ");
-// string? idText = Console.ReadLine();
-
-// if (int.TryParse(idText, out int id))
-// {
-//     Console.WriteLine($"You entered ID {id} for {website}.");
-// }
-// else
-// {
-//     Console.WriteLine("The ID must be a whole number.");
-// }
-
-// Lesson 1C
-// Console.Write("Enter password length: ");
-// int.TryParse(Console.ReadLine(), out int length);
-
-// if (length < 8)
-// {
-//     Console.WriteLine("Weak");
-// }
-// else if (length < 12)
-// {
-//     Console.WriteLine("Reasonable");
-// }
-// else
-// {
-//     Console.WriteLine("Long password");
-// }
-
-// string label = length switch
-// {
-//     < 8 => "Weak",
-//     < 12 => "Reasonable",
-//     _ => "Long"
-// };
-
-// Lesson 1D
-string[] websites = { "Netflix", "GitHub", "Microsoft" };
-
-for (int i = 0; i < websites.Length; i++)
-{
-    Console.WriteLine($"{i + 1}. {websites[i]}");
-}
-
-foreach (string website in websites)
-{
-    Console.WriteLine(website);
-}
-
+﻿List<string> entries = new List<string>();
 bool running = true;
+
 while (running)
 {
-    Console.Write("Type exit to stop: ");
-    string? command = Console.ReadLine();
-    running = command != "exit";
+    Console.WriteLine("Secure Vault");
+    Console.WriteLine("1. Add Entry");
+    Console.WriteLine("2. View Entries");
+    Console.WriteLine("3. Search Entries");
+    Console.WriteLine("4. Delete Entry");
+    Console.WriteLine("5. Exit");
+
+    Console.Write("Choose: ");
+    string? choose = Console.ReadLine();
+
+    switch (choose)
+    {
+        case "1":
+            Console.Write("Entry name: ");
+            string? value = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(value))
+                entries.Add(value.Trim());
+            break;
+        case "2":
+            foreach (string entry in entries)
+                Console.WriteLine(entry);
+            break;
+        case "3":
+            Console.Write("Search: ");
+            string? term = Console.ReadLine();
+            foreach (string entry in entries)
+                if (entry.Contains(term ?? "", StringComparison.OrdinalIgnoreCase))
+                    Console.WriteLine(entry);
+            break;
+
+        case "4":
+            Console.Write("Exact name to delete: ");
+            string? remove = Console.ReadLine();
+            entries.Remove(remove ?? "");
+            break;
+
+        case "5":
+            running = false;
+            break;
+
+        default:
+            Console.WriteLine("Unknown option.");
+            break;
+
+    }
 }
-
-
