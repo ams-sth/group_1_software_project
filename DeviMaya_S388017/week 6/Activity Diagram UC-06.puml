@@ -1,0 +1,48 @@
+@startuml UC-06_Add_Expense_Activity
+title UC-06: Manage Expense — Add Expense Flow
+
+start
+
+:Actor selects "Add Expense" within a spending group;
+:Actor provides expense details\n(name, amount, transaction date; optional notes);
+note right: Actor is recorded as the payer
+
+:Actor selects a split method;
+
+switch (Split method?)
+case (Equal)
+  :Actor selects which members owe a share;
+case (Unequal)
+  :Actor selects which members owe a share;
+  :Actor provides amount per member;
+case (Percentage-based)
+  :Actor selects which members owe a share;
+  :Actor provides percentage per member;
+endswitch
+
+if (Split values valid for method?\n(unequal sums to total /\npercentages sum to 100%)) then (no)
+  :System rejects expense;
+  :System prompts correction;
+  stop
+else (yes)
+endif
+
+if (Actor attaches receipt/photo?) then (yes)
+  repeat
+    :Actor uploads receipt/photo;
+    if (Upload succeeds?) then (yes)
+      break
+    else (no)
+      :System rejects the attachment;
+    endif
+  repeat while (Actor retries?) is (yes)
+  ->no;
+  :Actor proceeds without attachment;
+else (no)
+endif
+
+:System creates the expense record within the group;
+
+stop
+
+@enduml
